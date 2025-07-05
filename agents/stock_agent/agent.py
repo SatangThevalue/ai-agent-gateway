@@ -1,9 +1,19 @@
-# Agent logic for fetching stock data using Yahoo Finance library
+# Enhanced Stock Agent with improved comments and structure
 
 from yfinance import Ticker
 
 class StockAgent:
+    """Agent to fetch stock data using the Yahoo Finance library."""
+
     def fetch_stock_data(self, symbol):
+        """Fetch stock data for a given symbol.
+
+        Args:
+            symbol (str): The stock symbol to fetch data for.
+
+        Returns:
+            dict: Stock data including price, currency, market state, and name.
+        """
         try:
             stock = Ticker(symbol)
             stock_info = stock.info
@@ -18,5 +28,13 @@ class StockAgent:
             return {"error": str(e)}
 
     def process(self, input_data):
+        """Process input data to fetch stock information.
+
+        Args:
+            input_data (dict): Input data containing the stock symbol.
+
+        Returns:
+            dict: The fetched stock data.
+        """
         symbol = input_data.get("symbol")
         return self.fetch_stock_data(symbol)
