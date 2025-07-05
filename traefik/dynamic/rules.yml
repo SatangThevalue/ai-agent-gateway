@@ -1,0 +1,7 @@
+# Dynamic routing rules
+
+http:
+  routers:
+    example:
+      rule: "Host(`example.com`)"
+      service: "example-service"

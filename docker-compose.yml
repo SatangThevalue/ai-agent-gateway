@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v2.6
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./traefik:/etc/traefik
+
+  mcp-server:
+    build: ./mcp_server
+    environment:
+      - AGENT_REGISTRY_URL=http://agent-registry:8000
+    labels:
+      - "traefik.http.routers.mcp-server.rule=Host(`mcp.example.com`)"
+
+  agent-registry:
+    build: ./gateway
+    command: uvicorn agent_registry:app --host 0.0.0.0
+
+  ai-agent-weather:
+    build: ./agents/weather_agent
+    labels:
+      - "traefik.http.routers.weather.rule=Host(`weather.example.com`)"
+
+  ai-agent-stock:
+    build: ./agents/stock_agent
+    labels:
+      - "traefik.http.routers.stock.rule=Host(`stock.example.com`)"
+
+  ai-agent-crypto:
+    build: ./agents/crypto_agent
+    labels:
+      - "traefik.http.routers.crypto.rule=Host(`crypto.example.com`)"
+
+  ai-agent-forex:
+    build: ./agents/forex_agent
+    labels:
+      - "traefik.http.routers.forex.rule=Host(`forex.example.com`)"
